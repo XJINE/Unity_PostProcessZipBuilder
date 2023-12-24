@@ -33,13 +33,14 @@ namespace PostProcessZipBuilders
         public static void SaveSettings()
         {
             const string baseName = nameof(PostProcessZipBuilder);
+            EditorUserSettings.SetConfigValue(baseName, baseName); // To mark saved.
             EditorUserSettings.SetConfigValue($"{baseName}.{nameof(ShowDialogWhenBuild)}",   ShowDialogWhenBuild  .ToString());
             EditorUserSettings.SetConfigValue($"{baseName}.{nameof(Zip)}",                   Zip                  .ToString());
             EditorUserSettings.SetConfigValue($"{baseName}.{nameof(Overwrite)}",             Overwrite            .ToString());
             EditorUserSettings.SetConfigValue($"{baseName}.{nameof(IncludeBaseDir)}",        IncludeBaseDir       .ToString());
             EditorUserSettings.SetConfigValue($"{baseName}.{nameof(RemoveBaseDir)}",         RemoveBaseDir        .ToString());
             EditorUserSettings.SetConfigValue($"{baseName}.{nameof(RenameZip)}",             RenameZip            .ToString());
-            EditorUserSettings.SetConfigValue($"{baseName}.{nameof(RenameFormat)}",          RenameFormat         .ToString());
+            EditorUserSettings.SetConfigValue($"{baseName}.{nameof(RenameFormat)}",          RenameFormat                    );
             EditorUserSettings.SetConfigValue($"{baseName}.{nameof(RemoveStreamingAssets)}", RemoveStreamingAssets.ToString());
         }
 
@@ -47,6 +48,13 @@ namespace PostProcessZipBuilders
         public static void LoadSettings()
         {
             const string baseName = nameof(PostProcessZipBuilder);
+
+            var saved = EditorUserSettings.GetConfigValue(baseName);
+            if (string.IsNullOrEmpty(saved))
+            {
+                return;
+            }
+
             bool.TryParse (EditorUserSettings.GetConfigValue($"{baseName}.{nameof(ShowDialogWhenBuild)}"),   out ShowDialogWhenBuild);
             bool.TryParse (EditorUserSettings.GetConfigValue($"{baseName}.{nameof(Zip)}"),                   out Zip);
             bool.TryParse (EditorUserSettings.GetConfigValue($"{baseName}.{nameof(Overwrite)}"),             out Overwrite);
